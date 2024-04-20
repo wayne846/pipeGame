@@ -1,5 +1,4 @@
 #include "gamemanager.h"
-#include <iostream>
 #include <queue>
 #include <stdlib.h>
 #include <time.h>
@@ -24,7 +23,7 @@ GameManager::GameManager(int height, int width) {
 	this->width = width;
 	this->playerY = 0;
 	this->playerX = 0;
-	this->map = std::vector<std::vector<Pipe>>(height, std::vector<Pipe>(width));
+	this->map = std::vector<std::vector<Pipe*>>(height, std::vector<Pipe*>(width));
 	this->printmap = vector<std::vector<int>>(height * 3, std::vector<int>(width * 3));
 
 	//generate map
@@ -57,7 +56,7 @@ void GameManager::update(char a) {
             }
             break;
         case 'r':
-            map[playerY][playerX].rotate();
+            map[playerY][playerX]->rotate();
             break;
     }
 }
@@ -66,11 +65,11 @@ bool GameManager::isEnd() {
     //clean water
     for (int i = 0; i < height; i++){
         for (int j = 0; j < width; j++) {
-            this->map[i][j].hasWater = 0;
+            this->map[i][j]->hasWater = 0;
         }
     }
 
-    if(map[startY][0].canPass[Pipe::LEFT] == false){
+    if(map[startY][0]->canPass[Pipe::LEFT] == false){
         return false;
     }
 
@@ -93,34 +92,34 @@ bool GameManager::isEnd() {
         if(x < 0 || x >= width || y < 0 || y >= height) {
             continue;;
         }
-        if(map[y][x].hasWater){
+        if(map[y][x]->hasWater){
             continue;
         }
-        if(map[y][x].canPass[Pipe::getOpposieDir(dir)] == false){
+        if(map[y][x]->canPass[Pipe::getOpposieDir(dir)] == false){
             continue;
         }
 
-        map[y][x].hasWater = true;
+        map[y][x]->hasWater = true;
         //flow water to connected pipe
         if(x == width - 1 && y == endY){
             flag = true;
         }
-        if(map[y][x].canPass[Pipe::UP]){
+        if(map[y][x]->canPass[Pipe::UP]){
             qx.push(x);
             qy.push(y - 1);
             qdir.push(Pipe::UP);
         }
-        if(map[y][x].canPass[Pipe::RIGHT]){
+        if(map[y][x]->canPass[Pipe::RIGHT]){
             qx.push(x + 1);
             qy.push(y);
             qdir.push(Pipe::RIGHT);
         }
-        if(map[y][x].canPass[Pipe::DOWN]){
+        if(map[y][x]->canPass[Pipe::DOWN]){
             qx.push(x);
             qy.push(y + 1);
             qdir.push(Pipe::DOWN);
         }
-        if(map[y][x].canPass[Pipe::LEFT]){
+        if(map[y][x]->canPass[Pipe::LEFT]){
             qx.push(x - 1);
             qy.push(y);
             qdir.push(Pipe::LEFT);
@@ -145,13 +144,13 @@ void GameManager::createMapByRandom() {
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             if((i == startY && j == 0) || (i == endY && j == width - 1)){
-                map[i][j] = Pipe(randomGenerator(IO_PIPE_RONDOM_LIST), true);
+                map[i][j] = new Pipe(randomGenerator(IO_PIPE_RONDOM_LIST), true);
             }else if(grid[i][j] == 0){
-                map[i][j] = Pipe(randomGenerator(DEFAULT_PIPE_RONDOM_LIST), false);
+                map[i][j] = new Pipe(randomGenerator(DEFAULT_PIPE_RONDOM_LIST), false);
             }else if(grid[i][j] == 1){
-                map[i][j] = Pipe(randomGenerator(STRAIGHT_PIPE_RONDOM_LIST), true);
+                map[i][j] = new Pipe(randomGenerator(STRAIGHT_PIPE_RONDOM_LIST), true);
             }else if(grid[i][j] == 2){
-                map[i][j] = Pipe(randomGenerator(CURVED_PIPE_RONDOM_LIST), true);
+                map[i][j] = new Pipe(randomGenerator(CURVED_PIPE_RONDOM_LIST), true);
             }
         }
     }

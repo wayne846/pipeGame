@@ -12,7 +12,7 @@ private:
     const vector<int> IO_PIPE_RONDOM_LIST = {0, 70, 30, 0};
     const vector<int> DIR_RONDOM_LIST = { 25, 25, 25, 25 };
 
-	vector<vector<Pipe> > map;
+	vector<vector<Pipe*> > map;
 	vector<vector<int> > printmap;
 
 	int playerX, playerY;
@@ -28,15 +28,29 @@ private:
     void createMapByRandom();
     bool createMapByRandomDFS(vector<vector<int>> &grid, int x, int y, int lastDir, int depth); //DFS, call by createMapByRandom
 public:
-    GameManager(int length, int width);
+    GameManager(int height, int width);
 
 	//process player input
 	void update(char a);
 	//let water flow, return true if end
 	bool isEnd();
 	void printMap();
-	int getStart() {
-		return this->startY;
+
+	//getter
+	int getStartY() {
+		return startY;
+	}
+	int getEndY(){
+		return endY;
+	}
+	int getWidth(){
+		return width;
+	}
+	int getHeight(){
+		return height;
+	}
+	Pipe* getPipe(int x, int y){
+		return map[y][x];
 	}
 };
 #endif
