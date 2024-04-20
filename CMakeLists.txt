@@ -23,7 +23,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(pipeGame
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        uimanager.h uimanager.cpp
+        gamemanager.h gamemanager.cpp
+        pipe.h pipe.cpp
+        image.qrc
+
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET pipeGame APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
