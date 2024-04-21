@@ -4,6 +4,8 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QObject>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 class MainWindow;
 
@@ -18,6 +20,11 @@ class PipeShape : public QGraphicsPixmapItem, public QObject
         bool hasWater;
 
         MainWindow *window;
+
+        //sound effact
+        //use static because I do not want everyone has these guy
+        static QMediaPlayer *mediaPlayer;
+        static QAudioOutput *audioOutput;
 
         //for animation
         QTimer *timer;

@@ -6,6 +6,7 @@
 #include "pipeshape.h"
 #include "backgroundtile.h"
 #include <QGraphicsTextItem>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,10 +26,26 @@ MainWindow::MainWindow(QWidget *parent)
     images[4][0] = new QPixmap(":/IO");
     images[4][1] = new QPixmap(":/IOW");
 
+    //set finish text
     text_finish = new QGraphicsTextItem("Stage Clear!");
     text_finish->setFont(QFont("Arial", 40));
     text_finish->setZValue(1);
     text_finish->hide();
+
+    //set sound
+    //bgm
+    mediaPlayer_bgm = new QMediaPlayer;
+    audioOutput_bgm = new QAudioOutput;
+    mediaPlayer_bgm->setAudioOutput(audioOutput_bgm);
+    mediaPlayer_bgm->setSource(BGM_SOUND);
+    mediaPlayer_bgm->setLoops(QMediaPlayer::Infinite);
+    audioOutput_bgm->setVolume(40);
+    //finish
+    mediaPlayer_finish = new QMediaPlayer;
+    audioOutput_finish = new QAudioOutput;
+    mediaPlayer_finish->setAudioOutput(audioOutput_finish);
+    mediaPlayer_finish->setSource(FINISH_SOUND);
+    audioOutput_finish->setVolume(50);
 }
 
 MainWindow::~MainWindow()
@@ -55,6 +72,8 @@ void MainWindow::update(){
         text_finish->setPos(windowWidth / 2 - text_finish->boundingRect().width() / 2, windowHeight / 2 - text_finish->boundingRect().height() / 2);
         scene->addItem(text_finish);
         text_finish->show();
+        //play finish sound
+        mediaPlayer_finish->play();
     }
 }
 
@@ -128,6 +147,7 @@ void MainWindow::on_pushButton_random_clicked()
         tiles.push_back(tile2);
     }
 
+    mediaPlayer_bgm->play();
     update();
 }
 

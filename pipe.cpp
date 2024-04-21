@@ -8,6 +8,8 @@ const int Pipe::RIGHT = 1;
 const int Pipe::DOWN = 2;
 const int Pipe::LEFT = 3;
 
+
+
 Pipe::Pipe(){
     this->dir = 0;
     this->type = 0;

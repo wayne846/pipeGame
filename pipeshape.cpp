@@ -4,6 +4,9 @@
 #include <QTransform>
 #include <QDebug>
 
+QMediaPlayer* PipeShape::mediaPlayer = new QMediaPlayer;
+QAudioOutput* PipeShape::audioOutput = new QAudioOutput;
+
 PipeShape::PipeShape(int type, int dir, int x, int y, MainWindow *window)
 {
     //set variable
@@ -24,11 +27,18 @@ PipeShape::PipeShape(int type, int dir, int x, int y, MainWindow *window)
     timer = new QTimer(this);
     //it new syntax to me, I have totally no idea way it works
     QObject::connect(timer, &QTimer::timeout, this, &PipeShape::rotateAnimation);
+
+    //set sound, actully it just need once
+    mediaPlayer->setAudioOutput(audioOutput);
+    mediaPlayer->setSource(window->CLICK_SOUND);
+    audioOutput->setVolume(50);
 }
 
 void PipeShape::clicked(){
     if(type == 4) return;
     if(window->isfinish) return;
+    mediaPlayer->stop();
+    mediaPlayer->play();
     rotate();
 }
 

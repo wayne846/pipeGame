@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <vector>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,6 +28,10 @@ class MainWindow : public QMainWindow
         const QColor TILE_PATH_COLOR = QColor(146, 200, 224);
         const QColor TILE_HOVER_COLOR = QColor(204, 220, 227);
 
+        const QUrl CLICK_SOUND = QUrl("qrc:/click.mp3");
+        const QUrl FINISH_SOUND = QUrl("qrc:/finish.mp3");
+        const QUrl BGM_SOUND = QUrl("qrc:/prohibition.mp3");
+
         int squareWidth = 70;
         int windowWidth = 1000;
         int windowHeight = 800;
@@ -38,6 +44,12 @@ class MainWindow : public QMainWindow
 
         QGraphicsScene *scene;
         GameManager *gameManager;
+
+        //sound
+        QMediaPlayer *mediaPlayer_bgm;
+        QMediaPlayer *mediaPlayer_finish;
+        QAudioOutput *audioOutput_bgm;
+        QAudioOutput *audioOutput_finish;
 
         void update();
 
