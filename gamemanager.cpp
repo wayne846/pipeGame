@@ -101,7 +101,7 @@ bool GameManager::isEnd() {
 
         map[y][x]->hasWater = true;
         //flow water to connected pipe
-        if(x == width - 1 && y == endY){
+        if(x == width - 1 && y == endY && map[y][x]->canPass[Pipe::RIGHT]){
             flag = true;
         }
         if(map[y][x]->canPass[Pipe::UP]){
@@ -141,6 +141,7 @@ void GameManager::createMapByRandom() {
     //generate default path
     createMapByRandomDFS(grid, 0, startY, -1, 0);
 
+    //create pipe
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             if((i == startY && j == 0) || (i == endY && j == width - 1)){
@@ -151,6 +152,19 @@ void GameManager::createMapByRandom() {
                 map[i][j] = new Pipe(randomGenerator(STRAIGHT_PIPE_RONDOM_LIST), true);
             }else if(grid[i][j] == 2){
                 map[i][j] = new Pipe(randomGenerator(CURVED_PIPE_RONDOM_LIST), true);
+            }
+        }
+    }
+
+    //check for not end game when start
+    //random rotate all pipe until not finish game;
+    while(isEnd()){
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                int rotateTimes = randomGenerator(DIR_RONDOM_LIST);
+                for(int k = 0; k < rotateTimes; k++){
+                    map[i][j]->rotate();
+                }
             }
         }
     }

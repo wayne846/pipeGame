@@ -6,12 +6,14 @@
 
 PipeShape::PipeShape(int type, int dir, int x, int y, MainWindow *window)
 {
+    //set variable
     this->type = type;
     this->x = x;
     this->y = y;
     this->hasWater = false;
-
     this->window = window;
+
+    //set image
     this->setPixmap(window->images[type][0]->scaled(QSize(window->squareWidth, window->squareWidth)));
     this->setPos(window->squareWidth*(x + 1), window->squareWidth*y);
     this->setTransformOriginPoint(window->squareWidth / 2.0, window->squareWidth / 2.0);
@@ -20,7 +22,14 @@ PipeShape::PipeShape(int type, int dir, int x, int y, MainWindow *window)
 
     //set timer
     timer = new QTimer(this);
+    //it new syntax to me, I have totally no idea way it works
     QObject::connect(timer, &QTimer::timeout, this, &PipeShape::rotateAnimation);
+}
+
+void PipeShape::clicked(){
+    if(type == 4) return;
+    if(window->isfinish) return;
+    rotate();
 }
 
 void PipeShape::rotate(){
@@ -36,7 +45,13 @@ void PipeShape::rotateAnimation(){
     this->setRotation((int)(rotation() + 10) % 360);
     if(abs((int)rotation() - targetDir) < 3 ){
         timer->stop();
+        rotateAnimationEnd();
     }
+}
+
+void PipeShape::rotateAnimationEnd(){
+    window->gameManager->getPipe(x, y)->rotate();
+    window->update();
 }
 
 void PipeShape::setWater(bool b){
@@ -46,11 +61,11 @@ void PipeShape::setWater(bool b){
     this->setPixmap(window->images[type][waterNum]->scaled(QSize(window->squareWidth, window->squareWidth)));
 }
 
-void PipeShape::clicked(){
-    if(type == 4) return;
-    rotate();
-    window->gameManager->getPipe(x, y)->rotate();
-    window->update();
+void PipeShape::setDir(int d){
+    d = d % 4;
+    if(dir == d) return;
+    dir = d;
+    this->setRotation(dir * 90);
 }
 
 void PipeShape::mousePressEvent(QGraphicsSceneMouseEvent *event){

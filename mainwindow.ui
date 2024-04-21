@@ -110,6 +110,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="label__title">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>340</x>

@@ -29,7 +29,8 @@ Pipe::Pipe(int type, bool isdefaultPath) {
     }
 
     //random rotate
-    for(int i = 0; i < rand() % 4; i++){
+    int rateteTimes = rand() % 4;
+    for(int i = 0; i < rateteTimes; i++){
         rotate();
     }
 }

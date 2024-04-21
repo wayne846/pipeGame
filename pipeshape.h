@@ -10,17 +10,22 @@ class MainWindow;
 class PipeShape : public QGraphicsPixmapItem, public QObject
 {
     private:
+        //almost same like Pipe
         int type;
+        int dir;
         int x;
         int y;
         bool hasWater;
 
         MainWindow *window;
+
+        //for animation
         QTimer *timer;
-        int targetDir;
+        int targetDir; //when rotate to target dir, animation stop
+        void rotateAnimationEnd(); //called by rotateAnimation() when animation end
 
     private slots:
-        void rotateAnimation();
+        void rotateAnimation(); //start when clecked
 
     protected:
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -29,8 +34,10 @@ class PipeShape : public QGraphicsPixmapItem, public QObject
         PipeShape(int type, int dir, int x, int y, MainWindow *window);
         void rotate();
         void clicked();
-        void setWater(bool b);
 
+        //setter, they will change image
+        void setWater(bool b);
+        void setDir(int d);
 };
 
 #endif // PIPESHAPE_H

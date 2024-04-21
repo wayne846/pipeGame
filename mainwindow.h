@@ -14,6 +14,7 @@ using namespace std;
 
 class GameManager;
 class PipeShape;
+class BackgroundTile;
 
 class MainWindow : public QMainWindow
 {
@@ -21,12 +22,19 @@ class MainWindow : public QMainWindow
 
     public:
         const int BASIC_SQUARE_WIDTH = 70;
+        const QColor TILE_DEFAULT_COLOR = QColor(176,212,229);
+        const QColor TILE_PATH_COLOR = QColor(146, 200, 224);
+        const QColor TILE_HOVER_COLOR = QColor(204, 220, 227);
 
         int squareWidth = 70;
         int windowWidth = 1000;
         int windowHeight = 800;
+        bool isfinish = false; //I do not want to use isEnd again
         QPixmap* images[5][2];
         vector<vector<PipeShape*>> pipeShapes;
+
+        //I am tired to use 2d vector
+        vector<BackgroundTile*> tiles;
 
         QGraphicsScene *scene;
         GameManager *gameManager;
@@ -45,6 +53,7 @@ class MainWindow : public QMainWindow
 
         PipeShape *inputPipe;
         PipeShape *outputPipe;
+        QGraphicsTextItem *text_finish;
 
         Ui::MainWindow *ui;
 };

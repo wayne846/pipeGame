@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QScreen>
+#include <QDebug>
 #include "gamemanager.h"
 #include "pipeshape.h"
-#include <QDebug>
+#include "backgroundtile.h"
+#include <QGraphicsTextItem>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,6 +24,11 @@ MainWindow::MainWindow(QWidget *parent)
     images[3][1] = new QPixmap(":/LW");
     images[4][0] = new QPixmap(":/IO");
     images[4][1] = new QPixmap(":/IOW");
+
+    text_finish = new QGraphicsTextItem("Stage Clear!");
+    text_finish->setFont(QFont("Arial", 40));
+    text_finish->setZValue(1);
+    text_finish->hide();
 }
 
 MainWindow::~MainWindow()
@@ -33,8 +40,21 @@ void MainWindow::update(){
     bool flag = gameManager->isEnd();
     for(int i = 0; i < gameManager->getHeight(); i++){
         for(int j = 0; j < gameManager->getWidth(); j++){
-            pipeShapes[i][j]->setWater(gameManager->getPipe(j, i)->hasWater);
+            Pipe *pipe = gameManager->getPipe(j, i);
+            pipeShapes[i][j]->setWater(pipe->hasWater);
+            pipeShapes[i][j]->setDir(pipe->dir);
         }
+    }
+
+    //finish game
+    if(flag){
+        outputPipe->setWater(true);
+        isfinish = true;
+        qDebug() << "Stage Clear!";
+        //show ending text
+        text_finish->setPos(windowWidth / 2 - text_finish->boundingRect().width() / 2, windowHeight / 2 - text_finish->boundingRect().height() / 2);
+        scene->addItem(text_finish);
+        text_finish->show();
     }
 }
 
@@ -44,7 +64,7 @@ void MainWindow::on_pushButton_random_clicked()
     int width = ui->spinBox_width->value();
 
     //set all value about size
-    squareWidth = 700 / min(height, width);
+    squareWidth = 700 / max(height, width);
     windowWidth = squareWidth * (width + 2);
     windowHeight = squareWidth * height;
 
@@ -86,16 +106,27 @@ void MainWindow::on_pushButton_random_clicked()
     //create map
     gameManager = new GameManager(height, width);
 
-    //set pipeShapes
+    //set pipeShapes and background
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             Pipe* pipe = gameManager->getPipe(j, i);
             pipeShapes[i][j] = new PipeShape(pipe->type, pipe->dir, j, i, this);
+            tiles.push_back(new BackgroundTile(j, i, pipe->isdefaultPath, this));
         }
     }
     inputPipe = new PipeShape(4, 0, -1, gameManager->getStartY(), this);
     inputPipe->setWater(true);
     outputPipe = new PipeShape(4, 0, width, gameManager->getEndY(), this);
+    for(int i = 0; i < height; i++){
+        BackgroundTile *tile1;
+        BackgroundTile *tile2;
+        tile1 = new BackgroundTile(-1, i, (i == gameManager->getStartY()), this);
+        tile2 = new BackgroundTile(width, i, (i == gameManager->getEndY()), this);
+        tile1->setIsActive(false);
+        tile2->setIsActive(false);
+        tiles.push_back(tile1);
+        tiles.push_back(tile2);
+    }
 
     update();
 }
