@@ -5,8 +5,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <vector>
-#include <QMediaPlayer>
-#include <QAudioOutput>
+#include <QSoundEffect>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,6 +30,9 @@ class MainWindow : public QMainWindow
         const QUrl CLICK_SOUND = QUrl("qrc:/click.mp3");
         const QUrl FINISH_SOUND = QUrl("qrc:/finish.mp3");
         const QUrl BGM_SOUND = QUrl("qrc:/prohibition.mp3");
+        const QUrl CLICK_SOUND_WAV = QUrl("qrc:/click.wav");
+        const QUrl FINISH_SOUND_WAV = QUrl("qrc:/finish.wav");
+        const QUrl BGM_SOUND_WAV = QUrl("qrc:/prohibition.wav");
 
         int squareWidth = 70;
         int windowWidth = 1000;
@@ -46,10 +48,8 @@ class MainWindow : public QMainWindow
         GameManager *gameManager;
 
         //sound
-        QMediaPlayer *mediaPlayer_bgm;
-        QMediaPlayer *mediaPlayer_finish;
-        QAudioOutput *audioOutput_bgm;
-        QAudioOutput *audioOutput_finish;
+        QSoundEffect *soundEffect_bgm;
+        QSoundEffect *soundEffect_finish;
 
         void update();
 

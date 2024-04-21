@@ -4,8 +4,7 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QObject>
-#include <QMediaPlayer>
-#include <QAudioOutput>
+#include <QSoundEffect>
 
 class MainWindow;
 
@@ -23,8 +22,7 @@ class PipeShape : public QGraphicsPixmapItem, public QObject
 
         //sound effact
         //use static because I do not want everyone has these guy
-        static QMediaPlayer *mediaPlayer;
-        static QAudioOutput *audioOutput;
+        static QSoundEffect *soundEffect;
 
         //for animation
         QTimer *timer;

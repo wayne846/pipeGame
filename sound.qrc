@@ -3,5 +3,8 @@
         <file>finish.mp3</file>
         <file>click.mp3</file>
         <file>prohibition.mp3</file>
+        <file>prohibition.wav</file>
+        <file>click.wav</file>
+        <file>finish.wav</file>
     </qresource>
 </RCC>

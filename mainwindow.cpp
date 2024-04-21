@@ -34,18 +34,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     //set sound
     //bgm
-    mediaPlayer_bgm = new QMediaPlayer;
-    audioOutput_bgm = new QAudioOutput;
-    mediaPlayer_bgm->setAudioOutput(audioOutput_bgm);
-    mediaPlayer_bgm->setSource(BGM_SOUND);
-    mediaPlayer_bgm->setLoops(QMediaPlayer::Infinite);
-    audioOutput_bgm->setVolume(40);
+    soundEffect_bgm = new QSoundEffect;
+    soundEffect_bgm->setSource(BGM_SOUND_WAV);
+    soundEffect_bgm->setLoopCount(QSoundEffect::Infinite);
     //finish
-    mediaPlayer_finish = new QMediaPlayer;
-    audioOutput_finish = new QAudioOutput;
-    mediaPlayer_finish->setAudioOutput(audioOutput_finish);
-    mediaPlayer_finish->setSource(FINISH_SOUND);
-    audioOutput_finish->setVolume(50);
+    soundEffect_finish = new QSoundEffect;
+    soundEffect_finish->setSource(FINISH_SOUND_WAV);
 }
 
 MainWindow::~MainWindow()
@@ -73,7 +67,7 @@ void MainWindow::update(){
         scene->addItem(text_finish);
         text_finish->show();
         //play finish sound
-        mediaPlayer_finish->play();
+        soundEffect_finish->play();
     }
 }
 
@@ -147,7 +141,7 @@ void MainWindow::on_pushButton_random_clicked()
         tiles.push_back(tile2);
     }
 
-    mediaPlayer_bgm->play();
+    soundEffect_bgm->play();
     update();
 }
 
