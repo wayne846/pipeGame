@@ -10,6 +10,18 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1000</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1000</width>
+    <height>600</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -20,7 +32,7 @@
       <x>0</x>
       <y>0</y>
       <width>1000</width>
-      <height>800</height>
+      <height>600</height>
      </rect>
     </property>
    </widget>
@@ -149,9 +161,15 @@ by 李東峻、張維元</string>
     <property name="title">
      <string>選單</string>
     </property>
+    <addaction name="actionbackToMenu"/>
    </widget>
    <addaction name="menu"/>
   </widget>
+  <action name="actionbackToMenu">
+   <property name="text">
+    <string>回主選單</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

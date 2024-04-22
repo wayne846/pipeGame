@@ -26,12 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     images[4][0] = new QPixmap(":/IO");
     images[4][1] = new QPixmap(":/IOW");
 
-    //set finish text
-    text_finish = new QGraphicsTextItem("Stage Clear!");
-    text_finish->setFont(QFont("Arial", 40));
-    text_finish->setZValue(1);
-    text_finish->hide();
-
     //set sound
     //bgm
     soundEffect_bgm = new QSoundEffect;
@@ -65,6 +59,10 @@ void MainWindow::update(){
         isfinish = true;
         qDebug() << "Stage Clear!";
         //show ending text
+        text_finish = new QGraphicsTextItem("Stage Clear!");
+        text_finish->setFont(QFont("Arial", 40));
+        text_finish->setZValue(1);
+        text_finish->hide();
         text_finish->setPos(windowWidth / 2 - text_finish->boundingRect().width() / 2, windowHeight / 2 - text_finish->boundingRect().height() / 2);
         scene->addItem(text_finish);
         text_finish->show();
@@ -91,10 +89,14 @@ void MainWindow::startInit(){
     ui->spinBox_height->hide();
     ui->spinBox_width->hide();
 
-    //set scene
+    //set scene and mainwindow
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, windowWidth, windowHeight);
+    this->setMinimumSize(0, 0);
+    this->setMaximumSize(100000, 100000);
     this->setGeometry(0, 0, windowWidth, windowHeight + 20);
+    this->setMinimumSize(this->size());
+    this->setMaximumSize(this->size());
     QRect screenSize = this->screen()->geometry();
     this->move(screenSize.width()/2 - windowWidth/2, screenSize.height()/2 - windowHeight/2);
 
@@ -157,10 +159,54 @@ void MainWindow::on_pushButton_file_clicked()
 
     if(!GameManager::isSuccess){
         delete(gameManager);
+        gameManager = NULL;
         ui->pushButton_file->setText("Start by Default Map\n(test.txt)\nError: cannot open file");
         return;
     }
 
     startInit();
+}
+
+
+void MainWindow::on_actionbackToMenu_triggered()
+{
+    //show and hide ui
+    ui->label__title->show();
+    ui->label_height->show();
+    ui->label_width->show();
+    ui->spinBox_height->show();
+    ui->spinBox_width->show();
+    ui->spinBox_height->setValue(10);
+    ui->spinBox_width->setValue(10);
+    ui->pushButton_random->show();
+    ui->pushButton_file->show();
+
+    //set mainwindow
+    this->setMinimumSize(0, 0);
+    this->setMaximumSize(100000, 100000);
+    this->setGeometry(0, 0, 1000, 600);
+    this->setMinimumSize(this->size());
+    this->setMaximumSize(this->size());
+    windowWidth = 1000;
+    windowHeight = 600;
+    QRect screenSize = this->screen()->geometry();
+    this->move(screenSize.width()/2 - windowWidth/2, screenSize.height()/2 - windowHeight/2);
+
+    //set view
+    ui->graphicsView->setFixedSize(windowWidth, windowHeight);
+
+    //delete all object
+    if(scene != NULL){
+        delete(scene);
+        scene = NULL;
+    }
+    if(gameManager != NULL){
+        delete(gameManager);
+        gameManager = NULL;
+    }
+
+    isfinish = false;
+
+    soundEffect_bgm->stop();
 }
 

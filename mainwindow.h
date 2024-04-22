@@ -36,7 +36,7 @@ class MainWindow : public QMainWindow
 
         int squareWidth = 70;
         int windowWidth = 1000;
-        int windowHeight = 800;
+        int windowHeight = 600;
         bool isfinish = false; //I do not want to use isEnd again
         QPixmap* images[5][2];
         vector<vector<PipeShape*>> pipeShapes;
@@ -44,8 +44,8 @@ class MainWindow : public QMainWindow
         //I am tired to use 2d vector
         vector<BackgroundTile*> tiles;
 
-        QGraphicsScene *scene;
-        GameManager *gameManager;
+        QGraphicsScene *scene = NULL;
+        GameManager *gameManager = NULL;
 
         //sound
         QSoundEffect *soundEffect_bgm;
@@ -60,6 +60,8 @@ class MainWindow : public QMainWindow
         void on_pushButton_random_clicked();
 
         void on_pushButton_file_clicked();
+
+        void on_actionbackToMenu_triggered();
 
     private:
         PipeShape *inputPipe;
