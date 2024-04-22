@@ -29,6 +29,7 @@ PipeShape::PipeShape(int type, int dir, int x, int y, MainWindow *window)
 
     //set sound, actully it just need once
     soundEffect->setSource(window->CLICK_SOUND_WAV);
+    soundEffect->setVolume(0.5);
 
 }
 

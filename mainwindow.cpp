@@ -37,9 +37,11 @@ MainWindow::MainWindow(QWidget *parent)
     soundEffect_bgm = new QSoundEffect;
     soundEffect_bgm->setSource(BGM_SOUND_WAV);
     soundEffect_bgm->setLoopCount(QSoundEffect::Infinite);
+    soundEffect_bgm->setVolume(0.1);
     //finish
     soundEffect_finish = new QSoundEffect;
     soundEffect_finish->setSource(FINISH_SOUND_WAV);
+    soundEffect_finish->setVolume(0.3);
 }
 
 MainWindow::~MainWindow()
