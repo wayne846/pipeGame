@@ -101,12 +101,12 @@
       <x>590</x>
       <y>240</y>
       <width>191</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>Stary by Default Map
-(not finish)</string>
+     <string>Start by Default Map
+(test.txt)</string>
     </property>
    </widget>
    <widget class="QLabel" name="label__title">

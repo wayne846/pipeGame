@@ -59,13 +59,14 @@ class MainWindow : public QMainWindow
     private slots:
         void on_pushButton_random_clicked();
 
+        void on_pushButton_file_clicked();
+
     private:
-
-        QGraphicsTextItem *text_hello;
-
         PipeShape *inputPipe;
         PipeShape *outputPipe;
         QGraphicsTextItem *text_finish;
+
+        void startInit(); //called after gameManager has setted
 
         Ui::MainWindow *ui;
 };

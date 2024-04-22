@@ -2,6 +2,9 @@
 #include <queue>
 #include <stdlib.h>
 #include <time.h>
+#include <fstream>
+
+bool GameManager::isSuccess = false;
 
 int GameManager::randomGenerator(vector<int> v) {
     int sum = 0;
@@ -31,6 +34,65 @@ GameManager::GameManager(int height, int width) {
 	startY = rand() % height;
 	endY = rand() % width;
 	createMapByRandom();
+
+	isSuccess = true;
+}
+
+GameManager::GameManager() {
+    ifstream file;
+    file.open("test.txt");
+    if (!file.is_open()){
+        qDebug() << "connot open file";
+        return ;
+    }
+    file >> this->height;
+    file >> this->width;
+    this->playerY = 0;
+    this->playerX = 0;
+    this->startY = 0;
+    this->endY = height - 1;
+    this->map = std::vector<std::vector<Pipe*>>(height, std::vector<Pipe*>(width));
+    this->printmap = vector<std::vector<int>>(height * 3, std::vector<int>(width * 3));
+
+    for (int i = 0; i < height * 3; i++) {
+        for (int j = 0; j < width * 3; j++) {
+            char a;
+            file >> a;
+            /*if (a == ' ') {
+                string garbage;
+                getline(file, garbage);
+                file >> a;
+            }*/
+            if (a == 'P')
+                printmap[i][j] = 1;
+            else
+                printmap[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < height * 3; i += 3) {
+        for (int j = 0; j < width * 3; j += 3) {
+            for (int dir = 0; dir < 4; dir++) {
+                for (int type = 0; type < 4; type++) {
+                    int count = 0;
+                    Pipe compare;
+                    vector<vector<int>> compareVector;
+                    compareVector = vector<std::vector<int>>(3, std::vector<int>(3));
+                    compareVector = compare.getShap(type, dir);
+                    for (int k = i; k < i + 3; k++) {
+                        for (int l = j; l < j + 3; l++) {
+                            if (printmap[k][l] == compareVector[k - i][l - j])
+                                count++;
+                        }
+                    }
+                    if (count == 9) {
+                        this->map[i / 3][j / 3] = new Pipe(type, dir);
+                    }
+                }
+            }
+        }
+    }
+
+    isSuccess = true;
 }
 
 void GameManager::update(char a) {

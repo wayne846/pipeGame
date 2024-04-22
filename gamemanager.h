@@ -28,7 +28,10 @@ private:
     void createMapByRandom();
     bool createMapByRandomDFS(vector<vector<int>> &grid, int x, int y, int lastDir, int depth); //DFS, call by createMapByRandom
 public:
-    GameManager(int height, int width);
+    static bool isSuccess;
+
+    GameManager(int height, int width); //random map
+    GameManager(); //read map from filea
 
 	//process player input
 	void update(char a);

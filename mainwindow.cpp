@@ -73,10 +73,9 @@ void MainWindow::update(){
     }
 }
 
-void MainWindow::on_pushButton_random_clicked()
-{
-    int height = ui->spinBox_height->value();
-    int width = ui->spinBox_width->value();
+void MainWindow::startInit(){
+    int height = gameManager->getHeight();
+    int width = gameManager->getWidth();
 
     //set all value about size
     squareWidth = 700 / max(height, width);
@@ -103,10 +102,6 @@ void MainWindow::on_pushButton_random_clicked()
     ui->graphicsView->setFixedSize(windowWidth, windowHeight);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    // text_hello = scene->addText("Hello", QFont("Arial", 20));
-    // text_hello->setPos(0, 0);
-
     ui->graphicsView->setScene(scene);
 
     //init pipeShapes
@@ -117,9 +112,6 @@ void MainWindow::on_pushButton_random_clicked()
         }
         pipeShapes.push_back(row);
     }
-
-    //create map
-    gameManager = new GameManager(height, width);
 
     //set pipeShapes and background
     for(int i = 0; i < height; i++){
@@ -145,5 +137,30 @@ void MainWindow::on_pushButton_random_clicked()
 
     soundEffect_bgm->play();
     update();
+}
+
+void MainWindow::on_pushButton_random_clicked()
+{
+    int height = ui->spinBox_height->value();
+    int width = ui->spinBox_width->value();
+
+    //create map
+    gameManager = new GameManager(height, width);
+
+    startInit();
+}
+
+
+void MainWindow::on_pushButton_file_clicked()
+{
+    gameManager = new GameManager();
+
+    if(!GameManager::isSuccess){
+        delete(gameManager);
+        ui->pushButton_file->setText("Start by Default Map\n(test.txt)\nError: cannot open file");
+        return;
+    }
+
+    startInit();
 }
 

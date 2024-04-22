@@ -25,14 +25,25 @@ Pipe::Pipe(int type, bool isdefaultPath) {
     this->dir = 0;
     this->type = type;
     this->isdefaultPath = isdefaultPath;
-    bool canPassArr[4][4] = {{0, 1, 0, 1}, {0, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 0}};
     for(int i = 0; i < 4; i++) {
-        this->canPass[i] = canPassArr[type][i];
+        this->canPass[i] = CANPASS_ARR[type][i];
     }
 
     //random rotate
     int rateteTimes = rand() % 4;
     for(int i = 0; i < rateteTimes; i++){
+        rotate();
+    }
+}
+
+Pipe::Pipe(int type, int dir){
+    this->dir = 0;
+    this->type = type;
+    this->isdefaultPath = false;
+    for(int i = 0; i < 4; i++) {
+        this->canPass[i] = CANPASS_ARR[type][i];
+    }
+    for(int i = 0; i < dir; i++){
         rotate();
     }
 }
@@ -80,6 +91,17 @@ void Pipe::rotate() {
     canPass[3] = canPass[2];
     canPass[2] = canPass[1];
     canPass[1] = tmp;
+}
+
+void Pipe::setDir(int d){
+    if(dir == d) return;
+    dir = 0;
+    for(int i = 0; i < 4; i++){
+        canPass[i] = CANPASS_ARR[type][i];
+    }
+    for(int i = 0; i < d; i++){
+        rotate();
+    }
 }
 
 int Pipe::getOpposieDir(int dir){
