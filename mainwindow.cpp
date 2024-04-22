@@ -170,6 +170,7 @@ void MainWindow::on_actionbackToMenu_triggered()
     ui->spinBox_width->setValue(10);
     ui->pushButton_random->show();
     ui->pushButton_file->show();
+    ui->pushButton_file->setText("Start by Default Map\n(test.txt)");
 
     //set mainwindow
     this->setMinimumSize(0, 0);
@@ -196,6 +197,7 @@ void MainWindow::on_actionbackToMenu_triggered()
     }
 
     isfinish = false;
+    GameManager::isSuccess = false;
 
     SoundManager::getInstance()->stopBgm();
 }
