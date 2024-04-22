@@ -218,9 +218,12 @@ void GameManager::createMapByRandom() {
         }
     }
 
+
     //check for not end game when start
-    //random rotate all pipe until not finish game;
-    while(isEnd()){
+    //random rotate all pipe until not finish game or 100 times;
+    for(int t = 0; t < 100; t++){
+        if(!isEnd()) break;
+
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++){
                 int rotateTimes = randomGenerator(DIR_RONDOM_LIST);
@@ -237,11 +240,10 @@ bool GameManager::createMapByRandomDFS(vector<vector<int>> &grid, int x, int y, 
         grid[y][x] = 2;
         return true;
     }
-    if(x < 0 || x >= height || y < 0 || y >= width){
+    if(x < 0 || x >= width || y < 0 || y >= height){
         return false;
     }
     if(grid[y][x] != 0){
-
         return false;
     }
     depth++;
