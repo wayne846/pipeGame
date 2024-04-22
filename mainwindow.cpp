@@ -5,6 +5,7 @@
 #include "gamemanager.h"
 #include "pipeshape.h"
 #include "backgroundtile.h"
+#include "soundmanager.h"
 #include <QGraphicsTextItem>
 #include <QDir>
 
@@ -25,17 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     images[3][1] = new QPixmap(":/LW");
     images[4][0] = new QPixmap(":/IO");
     images[4][1] = new QPixmap(":/IOW");
-
-    //set sound
-    //bgm
-    soundEffect_bgm = new QSoundEffect;
-    soundEffect_bgm->setSource(BGM_SOUND_WAV);
-    soundEffect_bgm->setLoopCount(QSoundEffect::Infinite);
-    soundEffect_bgm->setVolume(0.1);
-    //finish
-    soundEffect_finish = new QSoundEffect;
-    soundEffect_finish->setSource(FINISH_SOUND_WAV);
-    soundEffect_finish->setVolume(0.3);
 }
 
 MainWindow::~MainWindow()
@@ -67,7 +57,7 @@ void MainWindow::update(){
         scene->addItem(text_finish);
         text_finish->show();
         //play finish sound
-        soundEffect_finish->play();
+        SoundManager::getInstance()->playFinish();
     }
 }
 
@@ -137,7 +127,7 @@ void MainWindow::startInit(){
         tiles.push_back(tile2);
     }
 
-    soundEffect_bgm->play();
+    SoundManager::getInstance()->playBgm();
     update();
 }
 
@@ -207,6 +197,36 @@ void MainWindow::on_actionbackToMenu_triggered()
 
     isfinish = false;
 
-    soundEffect_bgm->stop();
+    SoundManager::getInstance()->stopBgm();
+}
+
+
+void MainWindow::on_actionvolume0_triggered()
+{
+    SoundManager::getInstance()->setVolume(0);
+}
+
+
+void MainWindow::on_actionvolume30_triggered()
+{
+    SoundManager::getInstance()->setVolume(0.3);
+}
+
+
+void MainWindow::on_actionvolume50_triggered()
+{
+    SoundManager::getInstance()->setVolume(0.5);
+}
+
+
+void MainWindow::on_actionvolume70_triggered()
+{
+    SoundManager::getInstance()->setVolume(0.7);
+}
+
+
+void MainWindow::on_actionvolume100_triggered()
+{
+    SoundManager::getInstance()->setVolume(1);
 }
 

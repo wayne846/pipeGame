@@ -161,13 +161,49 @@ by 李東峻、張維元</string>
     <property name="title">
      <string>選單</string>
     </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>音量</string>
+     </property>
+     <addaction name="actionvolume0"/>
+     <addaction name="actionvolume30"/>
+     <addaction name="actionvolume50"/>
+     <addaction name="actionvolume70"/>
+     <addaction name="actionvolume100"/>
+    </widget>
     <addaction name="actionbackToMenu"/>
+    <addaction name="menu_2"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <action name="actionbackToMenu">
    <property name="text">
     <string>回主選單</string>
+   </property>
+  </action>
+  <action name="actionvolume0">
+   <property name="text">
+    <string>0%</string>
+   </property>
+  </action>
+  <action name="actionvolume30">
+   <property name="text">
+    <string>30%</string>
+   </property>
+  </action>
+  <action name="actionvolume50">
+   <property name="text">
+    <string>50%</string>
+   </property>
+  </action>
+  <action name="actionvolume70">
+   <property name="text">
+    <string>70%</string>
+   </property>
+  </action>
+  <action name="actionvolume100">
+   <property name="text">
+    <string>100%</string>
    </property>
   </action>
  </widget>

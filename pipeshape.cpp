@@ -1,10 +1,9 @@
 #include "pipeshape.h"
 #include "mainwindow.h"
 #include "gamemanager.h"
+#include "soundmanager.h"
 #include <QTransform>
 #include <QDebug>
-
-QSoundEffect* PipeShape::soundEffect = new QSoundEffect;
 
 PipeShape::PipeShape(int type, int dir, int x, int y, MainWindow *window)
 {
@@ -26,18 +25,12 @@ PipeShape::PipeShape(int type, int dir, int x, int y, MainWindow *window)
     timer = new QTimer(this);
     //it new syntax to me, I have totally no idea way it works
     QObject::connect(timer, &QTimer::timeout, this, &PipeShape::rotateAnimation);
-
-    //set sound, actully it just need once
-    soundEffect->setSource(window->CLICK_SOUND_WAV);
-    soundEffect->setVolume(0.5);
-
 }
 
 void PipeShape::clicked(){
     if(type == 4) return;
     if(window->isfinish) return;
-    soundEffect->stop();
-    soundEffect->play();
+    SoundManager::getInstance()->playClick();
     rotate();
 }
 

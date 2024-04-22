@@ -5,7 +5,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <vector>
-#include <QSoundEffect>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,13 +26,6 @@ class MainWindow : public QMainWindow
         const QColor TILE_PATH_COLOR = QColor(146, 200, 224);
         const QColor TILE_HOVER_COLOR = QColor(204, 220, 227);
 
-        const QUrl CLICK_SOUND = QUrl("qrc:/click.mp3");
-        const QUrl FINISH_SOUND = QUrl("qrc:/finish.mp3");
-        const QUrl BGM_SOUND = QUrl("qrc:/prohibition.mp3");
-        const QUrl CLICK_SOUND_WAV = QUrl("qrc:/click.wav");
-        const QUrl FINISH_SOUND_WAV = QUrl("qrc:/finish.wav");
-        const QUrl BGM_SOUND_WAV = QUrl("qrc:/prohibition.wav");
-
         int squareWidth = 70;
         int windowWidth = 1000;
         int windowHeight = 600;
@@ -47,10 +39,6 @@ class MainWindow : public QMainWindow
         QGraphicsScene *scene = NULL;
         GameManager *gameManager = NULL;
 
-        //sound
-        QSoundEffect *soundEffect_bgm;
-        QSoundEffect *soundEffect_finish;
-
         void update();
 
         MainWindow(QWidget *parent = nullptr);
@@ -62,6 +50,16 @@ class MainWindow : public QMainWindow
         void on_pushButton_file_clicked();
 
         void on_actionbackToMenu_triggered();
+
+        void on_actionvolume0_triggered();
+
+        void on_actionvolume30_triggered();
+
+        void on_actionvolume50_triggered();
+
+        void on_actionvolume70_triggered();
+
+        void on_actionvolume100_triggered();
 
     private:
         PipeShape *inputPipe;
