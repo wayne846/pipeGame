@@ -62,9 +62,9 @@ class MainWindow : public QMainWindow
         void on_actionvolume100_triggered();
 
     private:
-        PipeShape *inputPipe;
-        PipeShape *outputPipe;
-        QGraphicsTextItem *text_finish;
+        PipeShape *inputPipe = NULL;
+        PipeShape *outputPipe = NULL;
+        QGraphicsTextItem *text_finish = NULL;
 
         void startInit(); //called after gameManager has setted
 

@@ -187,6 +187,30 @@ void MainWindow::on_actionbackToMenu_triggered()
     ui->graphicsView->setFixedSize(windowWidth, windowHeight);
 
     //delete all object
+    for(int i = 0; i < pipeShapes.size(); i++){
+        for(int j = 0; j < pipeShapes[i].size(); j++){
+            if(pipeShapes[i][j] != NULL){
+                delete(pipeShapes[i][j]);
+                pipeShapes[i][j] = NULL;
+            }
+        }
+    }
+    pipeShapes.clear();
+    for(int i = 0; i < tiles.size(); i++){
+        if(tiles[i] != NULL){
+            delete(tiles[i]);
+            tiles[i] = NULL;
+        }
+    }
+    tiles.clear();
+    if(inputPipe != NULL){
+        delete(inputPipe);
+        inputPipe = NULL;
+    }
+    if(outputPipe != NULL){
+        delete(outputPipe);
+        outputPipe = NULL;
+    }
     if(scene != NULL){
         delete(scene);
         scene = NULL;

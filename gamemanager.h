@@ -32,6 +32,7 @@ public:
 
     GameManager(int height, int width); //random map
     GameManager(); //read map from filea
+    ~GameManager();
 
 	//process player input
 	void update(char a);

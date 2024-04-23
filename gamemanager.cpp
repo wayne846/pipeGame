@@ -42,7 +42,7 @@ GameManager::GameManager() {
     ifstream file;
     file.open("test.txt");
     if (!file.is_open()){
-        qDebug() << "connot open file";
+        qDebug() << "cannot open file";
         return ;
     }
     file >> this->height;
@@ -302,4 +302,16 @@ bool GameManager::createMapByRandomDFS(vector<vector<int>> &grid, int x, int y, 
     }
 
     return false;
+}
+
+GameManager::~GameManager(){
+    for(int i = 0; i < map.size(); i++){
+        for(int j = 0; j < map[i].size(); j++){
+            if(map[i][j] != NULL){
+                delete(map[i][j]);
+                map[i][j] = NULL;
+            }
+        }
+    }
+    map.clear();
 }
