@@ -1,3 +1,11 @@
+/***********************************************************************
+ * File: gameManager.cpp
+ * Author: B112150536 B11215058
+ * Create Date: 2024/04/24
+ * Editor: B11215058
+ * Update Date: 2024/04/24
+ * Description: This program is responsible for the main functions, including reading maps, generating maps, etc.
+***********************************************************************/
 #include "gamemanager.h"
 #include <queue>
 #include <stdlib.h>
@@ -6,21 +14,34 @@
 
 bool GameManager::isSuccess = false;
 
+// Intent: To give random pipe type.
+// Pre: Give shape when spawning pipes.
+// Post: The function returns the type
 int GameManager::randomGenerator(vector<int> v) {
-    int sum = 0;
+    int sum = 0;//store vector sum.
+
     for(int i = 0; i < v.size(); i++) {
-        sum += v[i];
+        sum += v[i];//calculate vector sum.
     }
-    int randNum = rand() % 100;
+
+    int randNum = rand() % 100;//create random number.
+
     for(int i = 0; i < v.size(); i++) {
+        //If type is within the range, return type.
         if (randNum < v[i] * 100 / (double)sum) {
             return i;
         }
+
+        //Subtract non-matching values
         randNum -= v[i] * 100 / (double)sum;
     }
+
     return 0;
 }
 
+// Intent: Create map by height and width.
+// Pre: When the user inputs the length and width to generate a map
+// Post: The function returns create the map
 GameManager::GameManager(int height, int width) {
 	this->height = height;
 	this->width = width;
@@ -38,13 +59,19 @@ GameManager::GameManager(int height, int width) {
 	isSuccess = true;
 }
 
+// Intent: Read map from file
+// Pre: When the user use read map by txt
+// Post: The function returns create the map
 GameManager::GameManager() {
+    //open the windows
     ifstream file;
     file.open("test.txt");
+
     if (!file.is_open()){
         qDebug() << "cannot open file";
         return ;
     }
+
     file >> this->height;
     file >> this->width;
     this->playerY = 0;
@@ -56,34 +83,40 @@ GameManager::GameManager() {
 
     for (int i = 0; i < height * 3; i++) {
         for (int j = 0; j < width * 3; j++) {
-            char a;
-            file >> a;
-            /*if (a == ' ') {
-                string garbage;
-                getline(file, garbage);
-                file >> a;
-            }*/
-            if (a == 'P')
+
+            //read one character from file
+            char character;
+            file >> character;
+
+            //if read P set pipe
+            if (character == 'P')
                 printmap[i][j] = 1;
             else
                 printmap[i][j] = 0;
         }
     }
+
     for (int i = 0; i < height * 3; i += 3) {
         for (int j = 0; j < width * 3; j += 3) {
             for (int dir = 0; dir < 4; dir++) {
                 for (int type = 0; type < 4; type++) {
+
                     int count = 0;
                     Pipe compare;
                     vector<vector<int>> compareVector;
                     compareVector = vector<std::vector<int>>(3, std::vector<int>(3));
                     compareVector = compare.getShap(type, dir);
+
                     for (int k = i; k < i + 3; k++) {
                         for (int l = j; l < j + 3; l++) {
+
+                            //compare 3*3vector and pipes,if equal,count++
                             if (printmap[k][l] == compareVector[k - i][l - j])
                                 count++;
                         }
                     }
+
+                    //if 3*3vector and pipes all equal,set the corresponding water pipe
                     if (count == 9) {
                         this->map[i / 3][j / 3] = new Pipe(type, dir);
                     }
@@ -92,37 +125,13 @@ GameManager::GameManager() {
         }
     }
 
+    file.close();
     isSuccess = true;
 }
 
-void GameManager::update(char a) {
-    switch(a){
-        case 'w':
-            if (playerY - 1 >= 0){
-                playerY--;
-            }
-            break;
-        case 's':
-            if (playerY + 1 < height){
-                playerY++;
-            }
-            break;
-        case 'd':
-            if(playerX + 1 < width){
-                playerX++;
-            }
-            break;
-        case 'a':
-            if(playerX - 1 >= 0){
-                playerX--;
-            }
-            break;
-        case 'r':
-            map[playerY][playerX]->rotate();
-            break;
-    }
-}
-
+// Intent: Determine the status of water pipe connections
+// Pre:After the user selects the water pipe
+// Post:The function returns reached the destination and the connection situation
 bool GameManager::isEnd() {
     //clean water
     for (int i = 0; i < height; i++){
@@ -131,6 +140,7 @@ bool GameManager::isEnd() {
         }
     }
 
+    //if start not connection return false
     if(map[startY][0]->canPass[Pipe::LEFT] == false){
         return false;
     }
@@ -143,6 +153,7 @@ bool GameManager::isEnd() {
     qx.push(0);
     qy.push(startY);
     qdir.push(Pipe::RIGHT);
+
     while(!qx.empty() || !qy.empty()){
         int x = qx.front();
         int y = qy.front();
@@ -150,6 +161,7 @@ bool GameManager::isEnd() {
         qx.pop();
         qy.pop();
         qdir.pop();
+
         //check some case
         if(x < 0 || x >= width || y < 0 || y >= height) {
             continue;;
@@ -190,8 +202,12 @@ bool GameManager::isEnd() {
     return flag;
 }
 
+// Intent: Create map
+// Pre:After createMapByRandom call
+// Post:The function return create map
 void GameManager::createMapByRandom() {
     vector<vector<int> > grid; //0 = default, 1 = straight, 2 = curved
+
     for (int i = 0; i < height; ++i) {
         vector<int> row;
         for (int j = 0; j < width; ++j) {
@@ -207,13 +223,13 @@ void GameManager::createMapByRandom() {
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             if((i == startY && j == 0) || (i == endY && j == width - 1)){
-                map[i][j] = new Pipe(randomGenerator(IO_PIPE_RONDOM_LIST), true);
+                map[i][j] = new Pipe(randomGenerator(IO_PIPE_RANDOM_LIST), true);
             }else if(grid[i][j] == 0){
-                map[i][j] = new Pipe(randomGenerator(DEFAULT_PIPE_RONDOM_LIST), false);
+                map[i][j] = new Pipe(randomGenerator(DEFAULT_PIPE_RANDOM_LIST), false);
             }else if(grid[i][j] == 1){
-                map[i][j] = new Pipe(randomGenerator(STRAIGHT_PIPE_RONDOM_LIST), true);
+                map[i][j] = new Pipe(randomGenerator(STRAIGHT_PIPE_RANDOM_LIST), true);
             }else if(grid[i][j] == 2){
-                map[i][j] = new Pipe(randomGenerator(CURVED_PIPE_RONDOM_LIST), true);
+                map[i][j] = new Pipe(randomGenerator(CURVED_PIPE_RANDOM_LIST), true);
             }
         }
     }
@@ -226,7 +242,7 @@ void GameManager::createMapByRandom() {
 
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++){
-                int rotateTimes = randomGenerator(DIR_RONDOM_LIST);
+                int rotateTimes = randomGenerator(DIR_RANDOM_LIST);
                 for(int k = 0; k < rotateTimes; k++){
                     map[i][j]->rotate();
                 }
@@ -235,6 +251,9 @@ void GameManager::createMapByRandom() {
     }
 }
 
+// Intent: Create map by BFS
+// Pre:After the user enter height and width
+// Post:The function the data used to generate map
 bool GameManager::createMapByRandomDFS(vector<vector<int>> &grid, int x, int y, int lastDir, int depth) {
     if(x == width - 1 && y == endY){
         grid[y][x] = 2;
@@ -304,6 +323,8 @@ bool GameManager::createMapByRandomDFS(vector<vector<int>> &grid, int x, int y, 
     return false;
 }
 
+// Intent: Delete map
+// Pre:when the program ends
 GameManager::~GameManager(){
     for(int i = 0; i < map.size(); i++){
         for(int j = 0; j < map[i].size(); j++){
@@ -313,5 +334,6 @@ GameManager::~GameManager(){
             }
         }
     }
+
     map.clear();
 }

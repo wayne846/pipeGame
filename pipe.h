@@ -1,3 +1,11 @@
+/***********************************************************************
+ * File: pipe.h
+ * Author: B112150536 B11215058
+ * Create Date: 2024/04/24
+ * Editor: B11215058
+ * Update Date: 2024/04/24
+ * Description: This program is the class of pipe
+***********************************************************************/
 #pragma once
 #include <vector>
 #include <QGraphicsPixmapItem>

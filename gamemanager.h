@@ -1,3 +1,11 @@
+/***********************************************************************
+ * File: gameManager.h
+ * Author: B112150536 B11215058
+ * Create Date: 2024/04/24
+ * Editor: B11215058
+ * Update Date: 2024/04/24
+ * Description: This program is responsible for the main functions, including reading maps, generating maps, etc.
+***********************************************************************/
 #ifndef gameManager_H
 #define gameManager_H
 #include <vector>
@@ -6,14 +14,17 @@ using namespace std;
 
 class GameManager {
 private:
-    const vector<int> DEFAULT_PIPE_RONDOM_LIST = {30, 30, 10, 30 };
-    const vector<int> STRAIGHT_PIPE_RONDOM_LIST = {50, 25, 25, 0};
-    const vector<int> CURVED_PIPE_RONDOM_LIST = {0, 25, 25, 50};
-    const vector<int> IO_PIPE_RONDOM_LIST = {0, 70, 30, 0};
-    const vector<int> DIR_RONDOM_LIST = { 25, 25, 25, 25 };
+    //adjust the generation probability of pipes according to different situations.
+    const vector<int> DEFAULT_PIPE_RANDOM_LIST = {30, 30, 10, 30 };
+    const vector<int> STRAIGHT_PIPE_RANDOM_LIST = {50, 25, 25, 0};
+    const vector<int> CURVED_PIPE_RANDOM_LIST = {0, 25, 25, 50};
+    const vector<int> IO_PIPE_RANDOM_LIST = {0, 70, 30, 0};
+    const vector<int> DIR_RANDOM_LIST = { 25, 25, 25, 25 };
 
+    //use multiple pipe classes to store maps.
 	vector<vector<Pipe*> > map;
 	vector<vector<int> > printmap;
+
 
 	int playerX, playerY;
 	int startY; //game is always start from left, x = 0
@@ -21,7 +32,6 @@ private:
 	int height;
 	int width;
 
-	//void setColor(int color);
 
     //return random number, contorled by vector
     int randomGenerator(vector<int> v);
@@ -34,8 +44,6 @@ public:
     GameManager(); //read map from filea
     ~GameManager();
 
-	//process player input
-	void update(char a);
 	//let water flow, return true if end
 	bool isEnd();
 	void printMap();
