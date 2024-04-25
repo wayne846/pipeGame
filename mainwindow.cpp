@@ -1,3 +1,11 @@
+/***********************************************************************
+ * File: mainwindow.cpp
+ * Author: B112150536 B11215058
+ * Create Date: 2024/04/24
+ * Editor: B11215036
+ * Update Date: 2024/04/25
+ * Description: control the game flow, and display
+***********************************************************************/
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QScreen>
@@ -9,6 +17,9 @@
 #include <QGraphicsTextItem>
 #include <QDir>
 
+//Intent: constructor
+//Pre: nothing
+//Post: initialize images and set the ui
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -28,11 +39,17 @@ MainWindow::MainWindow(QWidget *parent)
     images[4][1] = new QPixmap(":/IOW");
 }
 
+//Intent: destructor
+//Pre: nothing
+//Post: delete ui
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+//Intent: make sure the pipeShape is in the right position, check if the game is over
+//Pre: nothing
+//Post: all pipeShapes are in the right position, if the game is over, show the ending text
 void MainWindow::update(){
     bool flag = gameManager->isEnd();
     for(int i = 0; i < gameManager->getHeight(); i++){
@@ -61,6 +78,9 @@ void MainWindow::update(){
     }
 }
 
+//Intent: initialize the game
+//Pre: gameManager has setted
+//Post: all menu ui is hidden, set the window size, all pipeShapes and background are setted, start the game
 void MainWindow::startInit(){
     int height = gameManager->getHeight();
     int width = gameManager->getWidth();
@@ -131,6 +151,9 @@ void MainWindow::startInit(){
     update();
 }
 
+//Intent: start the game by random map
+//Pre: nothing
+//Post: set the gameManager and call startInit
 void MainWindow::on_pushButton_random_clicked()
 {
     int height = ui->spinBox_height->value();
@@ -142,11 +165,14 @@ void MainWindow::on_pushButton_random_clicked()
     startInit();
 }
 
-
+//Intent: start the game by file
+//Pre: nothing
+//Post: set the gameManager and call startInit
 void MainWindow::on_pushButton_file_clicked()
 {
     gameManager = new GameManager();
 
+    //if cannot open file, show error, not start the game
     if(!GameManager::isSuccess){
         delete(gameManager);
         gameManager = NULL;
@@ -157,7 +183,9 @@ void MainWindow::on_pushButton_file_clicked()
     startInit();
 }
 
-
+//Intent: back to menu
+//Pre: nothing
+//Post: show and hide ui, delete all object, set the window size
 void MainWindow::on_actionbackToMenu_triggered()
 {
     //show and hide ui
@@ -220,37 +248,49 @@ void MainWindow::on_actionbackToMenu_triggered()
         gameManager = NULL;
     }
 
+    //set flag
     isfinish = false;
     GameManager::isSuccess = false;
 
+    //stop bgm
     SoundManager::getInstance()->stopBgm();
 }
 
-
+//Intent: set volume
+//Pre: nothing
+//Post: set the volume to 0%
 void MainWindow::on_actionvolume0_triggered()
 {
     SoundManager::getInstance()->setVolume(0);
 }
 
-
+//Intent: set volume
+//Pre: nothing
+//Post: set the volume to 30%
 void MainWindow::on_actionvolume30_triggered()
 {
     SoundManager::getInstance()->setVolume(0.3);
 }
 
-
+//Intent: set volume
+//Pre: nothing
+//Post: set the volume to 50%
 void MainWindow::on_actionvolume50_triggered()
 {
     SoundManager::getInstance()->setVolume(0.5);
 }
 
-
+//Intent: set volume
+//Pre: nothing
+//Post: set the volume to 70%
 void MainWindow::on_actionvolume70_triggered()
 {
     SoundManager::getInstance()->setVolume(0.7);
 }
 
-
+//Intent: set volume
+//Pre: nothing
+//Post: set the volume to 100%
 void MainWindow::on_actionvolume100_triggered()
 {
     SoundManager::getInstance()->setVolume(1);

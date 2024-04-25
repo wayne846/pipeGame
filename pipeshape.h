@@ -1,3 +1,12 @@
+/***********************************************************************
+ * File: pipeshape.h
+ * Author: B112150536 B11215058
+ * Create Date: 2024/04/24
+ * Editor: B11215036
+ * Update Date: 2024/04/25
+ * Description: display pipe on the screen
+***********************************************************************/
+
 #ifndef PIPESHAPE_H
 #define PIPESHAPE_H
 
@@ -10,6 +19,7 @@ class MainWindow;
 class PipeShape : public QGraphicsPixmapItem, public QObject
 {
     private:
+        //information of the pipeShape
         //almost same like Pipe
         int type;
         int dir;
@@ -25,14 +35,21 @@ class PipeShape : public QGraphicsPixmapItem, public QObject
         void rotateAnimationEnd(); //called by rotateAnimation() when animation end
 
     private slots:
-        void rotateAnimation(); //start when clecked
+        //for rotate animation, start when clecked
+        void rotateAnimation(); 
 
     protected:
+        //mouse event
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
     public:
+        //constructor
         PipeShape(int type, int dir, int x, int y, MainWindow *window);
+
+        //rotate 90 degree clockwise
         void rotate();
+
+        //behavior when clicked
         void clicked();
 
         //setter, they will change image
