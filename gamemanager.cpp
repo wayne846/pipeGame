@@ -52,8 +52,9 @@ GameManager::GameManager(int height, int width) {
 
 	//generate map
 	srand(time(NULL));
+
 	startY = rand() % height;
-	endY = rand() % width;
+	endY = rand() % height;
 	createMapByRandom();
 
 	isSuccess = true;
